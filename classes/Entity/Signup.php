@@ -12,7 +12,7 @@ class Signup extends DataBasePDO {
 
         if (!$statement->execute(array($nameFirst, $email, $hashedPassword, 1))) {
             $statement = null;
-            header("location: registration.php?error=statement_error_SET_USER");
+            header("location: signup.php?error=statement_error_SET_USER");
             exit();
         }
 
@@ -26,7 +26,7 @@ class Signup extends DataBasePDO {
         //exist
         if (!$statement->execute(array($nameFirst, $email))) {
             $statement = null;
-            header("location: registration.php?error=statement_error_CHECK_USER");
+            header("location: signup.php?error=statement_error_CHECK_USER");
             exit();
         }
 

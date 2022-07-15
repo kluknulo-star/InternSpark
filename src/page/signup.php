@@ -1,18 +1,13 @@
 <?php
-session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "$root/src/constant/verificationError.php";
+require_once "$root/includes/session/session.php";
 ?>
 
 <!doctype html>
 <html>
 <head>
     <title>Регистрация и авторизация пользователей</title>
-    <!-- Подключаем необходимые файлы для работы Bootstrap 4 -->
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
-    <link rel="stylesheet" href="styles/homepage.css">
-
 
     <!-- Подключаем необходимые файлы для работы Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -34,15 +29,8 @@ require_once "$root/src/constant/verificationError.php";
 <?php
 if (isset($_SESSION["uid"]))
 {
-    header("location: /InternSpark/src/page/table.php");
+    header("location: /InternSpark/src/page/table/table.php");
     exit();
-    ?>
-    <div align="center">
-        <label> Hello, <?php echo $_SESSION["uid"]?></label>
-        <a href="../../includes/logoutInclude.php" class="btn btn-danger">LOGOUT</a>
-        <a href="/InternSpark/src/page/table.php" class="btn btn-primary"> Таблица пользователей</a>
-    </div>
-    <?php
 }
 else
 {
@@ -50,7 +38,7 @@ else
 
     <div align="center">
         <a href="login.php" class="btn btn-light">Вход</a>
-        <a href="registration.php" class="btn btn-success">Регистрация</a>
+        <a href="signup.php" class="btn btn-success">Регистрация</a>
     </div>
 
     <?php
@@ -67,22 +55,24 @@ else
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
 
+<!--                            Alert Error-->
                             <?php
-                            //                            var_dump($_GET);
-                            if (isset($_GET["error"]) && isset(ALL_VERIFICATION_ARRAY[$_GET["error"]])) {?>
+                            if (isset($_SESSION["error"]) && isset(ALL_VERIFICATION_ARRAY[$_SESSION["error"]])) {?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong><?php echo ALL_VERIFICATION_ARRAY[$_GET["error"]]?></strong>
+                                    <strong><?php echo ALL_VERIFICATION_ARRAY[$_SESSION["error"]]?></strong>
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                                 <?php
-                                unset($_GET["error"]);
+                                unset($_SESSION["error"]);
                             } ?>
+<!--                            Alert Error-->
 
+<!--                            Card SignUp-->
                             <div class="card" style="border-radius: 15px;">
                                 <div class="card-body p-5">
                                     <h2 class="text-uppercase text-center mb-5">Создать аккаунт</h2>
 
-                                    <form action="../../includes/crudInclude.php" method="post">
+                                    <form action="../../includes/signupInclude.php" method="post">
 
                                         <div class="form-outline mb-4">
                                             <label class="form-label" for="form3Example1cg">Имя</label>
@@ -129,6 +119,7 @@ else
 
                                 </div>
                             </div>
+<!--                            Card SignUp-->
                         </div>
                     </div>
                 </div>

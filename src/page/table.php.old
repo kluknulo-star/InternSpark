@@ -3,6 +3,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "$root/includes/crudInclude.php";
 require_once "$root/classes/utils/Pagination.php";
 require_once "$root/src/constant/tableActionAlert.php";
+require_once "$root/includes/session/session.php";
+
 
 if (empty($_SESSION) || !isset($_SESSION["uid"])) {
     header("location: /InternSpark/src/page/login.php?error=session_not_found");
@@ -83,13 +85,23 @@ $session_role_name = $_SESSION["role_name"];
         </span>
 
         <a href="../../includes/logoutInclude.php" class="btn btn-danger">LOGOUT</a>
+        <a href="profile.php" class="btn btn-primary">Profile</a>
     </form>
+
+
+
     <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
     if ($session_role_name == "admin") {
 
         echo '<button class="btn btn-success mt-2" data-toggle="modal" data-target="#create">';
         echo '<i class="fa fa-plus"></i> </button>';
     }
+
+    $UserData = new UserData();
+
     ?>
 
 
@@ -99,7 +111,6 @@ $session_role_name = $_SESSION["role_name"];
             <th scope="col">id</th>
             <th scope="col">nameFirst</th>
             <th scope="col">email</th>
-            <th scope="col">password</th>
             <th scope="col">deleted_at</th>
             <th scope="col">role_name</th>
             <th scope="col">Action</th>
@@ -108,11 +119,8 @@ $session_role_name = $_SESSION["role_name"];
         <tbody>
         <?php
 
-        $UserData = new UserData();
 
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
+
         //    here is Table
 
 
@@ -136,7 +144,8 @@ $session_role_name = $_SESSION["role_name"];
                 <tr>
                     <!--            here is rows-->
                     <!--            -->
-                    <?php echo $row; ?>
+                    <?php echo $row;
+                    ?>
 
 
                     <td>
@@ -166,13 +175,17 @@ $session_role_name = $_SESSION["role_name"];
 
                             <?php }
 
-                        } ?>
+                        }
+
+                        ?>
 
                     </td>
 
 
                 </tr>
-            <?php } ?>
+            <?php }
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            ?>
             <!-- Modal edit-->
             <div class="modal fade" id="edit<?php echo $row->getId() ?>" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -197,8 +210,16 @@ $session_role_name = $_SESSION["role_name"];
                                            value="<?php echo $row->getNameFirst() ?>">
                                 </div>
                                 <div class="form-group">
+                                    <small>Пароль</small>
+                                    <input type="password" class="form-control" name="pwd">
+                                </div>
+                                <div class="form-group">
+                                    <small>Повторите пароль</small>
+                                    <input type="password" class="form-control" name="pwdRepeat">
+                                </div>
+                                <div class="form-group">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="setAdmin" type="checkbox" checked>
+                                        <input class="form-check-input" name="setAdmin" type="checkbox" >
                                         <label class="form-check-label" for="flexCheckChecked">
                                             назначить Администратором
                                         </label>
@@ -275,6 +296,7 @@ $session_role_name = $_SESSION["role_name"];
                             </button>
                         </div>
                         <div class="modal-body">
+<!--                            <img class="rounded-circle" alt="default.svg" src="http://simpleicon.com/wp-content/uploads/user1.png"  data-holder-rendered="true">-->
                             <p>Имя: <?php echo $row->getNameFirst() ?></p>
                             <p>Почта: <?php echo $row->getEmail() ?></p>
                         </div>
@@ -341,6 +363,8 @@ $session_role_name = $_SESSION["role_name"];
             </div>
         </div>
     </div>
+
+
 
     <div class="d-flex justify-content-center">
         <?php echo $pagination; ?>

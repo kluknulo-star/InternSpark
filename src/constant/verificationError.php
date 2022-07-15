@@ -2,6 +2,7 @@
 const ALL_VERIFICATION_ARRAY = [
     "empty_input" => "Заполните все поля",
     "invalid_uid" => "Неверный формат пользователя",
+    "invalid_email" => "Неверный формат почты",
     "incorrect_format_password" => "Неверный формат пароля",
     "user_not_found" => "Пользователь не найден",
     "incorrect_user_or_password" => "Неверно введен логин или пароль",

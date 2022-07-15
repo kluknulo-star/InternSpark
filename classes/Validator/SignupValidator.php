@@ -1,8 +1,8 @@
 <?php
-
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "$root/classes/Entity/Signup.php";
 require_once "$root/classes/Validator/Validation.php";
+require_once "$root/includes/session/session.php";
 
 class SignupValidator extends Signup {
 
@@ -21,39 +21,42 @@ class SignupValidator extends Signup {
     public function signupUser()
     {
 
-        $location = "../src/page/registration.php";
+        $location = "../src/page/signup.php";
 
         $_SESSION["try_signup_name_first"] = $this->nameFirst;
         $_SESSION["try_signup_email"] = $this->email;
 
-
-
         if(!Validation::isFullInput($this->nameFirst, $this->password, $this->passwordRepeat, $this->email)) {
             // echo "Empty input";
-            header("location: $location?error=empty_input");
+            $_SESSION["error"] = "empty_input";
+            header("location: $location");
             exit();
         }
         if(!Validation::isValidNameFirst($this->nameFirst)) {
             // echo "Invalid NameFirst";
-            header("location: $location?error=invalid_uid");
+            $_SESSION["error"] = "invalid_uid";
+            header("location: $location");
             exit();
         }
 
         if(!Validation::isValidEmail($this->email)) {
             // echo "Invalid email";
-            header("location: $location?error=invalid_uid");
+            $_SESSION["error"] = "invalid_uid";
+            header("location: $location");
             exit();
         }
 
         if(!Validation::isValidPassword($this->password)) {
             // echo "Invalid email";
-            header("location: $location?error=incorrect_format_password");
+            $_SESSION["error"] = "incorrect_format_password";
+            header("location: $location");
             exit();
         }
 
         if(!Validation::isPasswordMatch($this->password, $this->passwordRepeat)) {
             // echo "Passwords don't match! ";
-            header("location: $location?error=password_doesnt_match");
+            $_SESSION["error"] = "password_doesnt_match";
+            header("location: $location");
             exit();
         }
 
@@ -61,7 +64,8 @@ class SignupValidator extends Signup {
 
         if($this->uidTakenCheck()) {
             // echo "Invalid Username or email taken";
-            header("location: $location?error=user_or_mail_taken");
+            $_SESSION["error"] = "user_or_mail_taken";
+            header("location: $location");
             exit();
         }
 

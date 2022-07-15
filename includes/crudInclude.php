@@ -1,19 +1,23 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once "$root/classes/Entity/UserData.php";
 require_once "$root/includes/signupInclude.php";
-require_once "$root/classes/Validator/Validation.php";
+require_once "$root/classes/Validator/EditValidator.php";
+require_once "$root/includes/session/session.php";
+require_once "$root/classes/Helper/UserHelper.php";
+
 $UserData = new UserData();
+
 
 function checkAccessAction($error_code)
 {
     if (isset($_SESSION["uid"]) && $_SESSION["role_name"] != "admin") {
             $_SESSION["error"] = $error_code;
-            header("location: /InternSpark/src/page/table.php");
+            header("location: /InternSpark/src/page/page/table.php");
             exit();
         } elseif (!isset($_SESSION["uid"])){
-            header("location: /InternSpark/src/page/login.php?error=$error_code");
+            $_SESSION["error"] = $error_code;
+            header("location: /InternSpark/src/page/login.php");
             exit();
         }
 }
@@ -26,11 +30,23 @@ function showSuccessAction($success_code)
     header("location: table.php");
 }
 
+function checkMyselfAction($error_code)
+{
+    $userInSystem = UserHelper::findUser($_SESSION["uid"]);
+    if ($_GET["id"] == $userInSystem->getId())
+    {
+        $_SESSION["error"] = $error_code;
+        header("location: /InternSpark/src/page/table/table.php");
+        exit();
+    }
+}
 
 if (isset($_POST['edit'])) {
     $email = $_POST["email"];
     $nameFirst = $_POST["firstName"];
     $get_id = $_GET["id"];
+    $password = $_POST["pwd"];
+    $passwordRepeat = $_POST["pwdRepeat"];
 
     if (isset($_POST["setAdmin"])){
         $role_set = 2;
@@ -40,28 +56,17 @@ if (isset($_POST['edit'])) {
 
     checkAccessAction("access_denied");
 
+    checkMyselfAction("access_myself_denied");
 
-    $location='/InternSpark/src/page/table.php';
-    if(!Validation::isValidNameFirst($nameFirst)) {
-        // echo "Invalid NameFirst";
-        $_SESSION["error"] = "invalid_uid";
-        header("location: $location");
-        exit(); //check
-    }
+    $editUser = new EditValidator($get_id, $nameFirst, $email, $password, $passwordRepeat, $role_set);
 
-    if(!Validation::isValidEmail($email)) {
-        // echo "Invalid email";
-        $_SESSION["error"] = "invalid_uid";
-        header("location: $location");
-        exit();
-    }
-
-    $UserData->update($get_id, $nameFirst, $email,$role_set);
+    $editUser->editUser();
+//    $UserData->update($get_id, $nameFirst, $email,$role_set);
     showSuccessAction("success_edit");
 }
 
-if (isset($_POST["add"])) {
 
+if (isset($_POST["add"])) {
     //Grabbing the data
     $nameFirst = $_POST["uid"];
     $password = $_POST["pwd"];
@@ -77,7 +82,6 @@ if (isset($_POST["add"])) {
     require_once "$root/classes/Validator/AddValidator.php";
     $signup = new AddValidator($nameFirst, $password, $passwordRepeat, $email);
 
-
     //Running error handlers and user signup
     $signup->addUser();
 
@@ -85,21 +89,18 @@ if (isset($_POST["add"])) {
     $_SESSION["try_create_email"] = "";
 
     showSuccessAction("success_add");
-
 }
 
 if (isset($_POST['delete'])) {
-    echo "here is delete";
-//    var_dump($get_id);
-    checkAccessAction("access_denied");
 
+    checkAccessAction("access_denied");
+    checkMyselfAction("access_myself_denied");
     $get_id = $_GET["id"];
     $UserData->delete($get_id);
     showSuccessAction("success_delete");
 }
 
 if (isset($_POST['recover'])) {
-
 
     checkAccessAction("access_denied");
 

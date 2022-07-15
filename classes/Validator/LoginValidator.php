@@ -2,6 +2,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "$root/classes/Entity/Login.php";
 require_once "$root/classes/Validator/Validation.php";
+require_once "$root/includes/session/session.php";
 
 class LoginValidator extends Login {
 
@@ -20,14 +21,12 @@ class LoginValidator extends Login {
 
         if(!Validation::isFullInputLogin($this->uid, $this->password)) {
             // echo "Empty input";
-            header("location: $location?error=empty_input");
+            $_SESSION["error"] = "empty_input";
+            header("location: $location?error=");
             exit();
         }
 
-
         $this->getUser($this->uid, $this->password);
     }
-
-
 
 }

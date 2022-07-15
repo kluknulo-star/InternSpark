@@ -5,8 +5,6 @@ require_once "$root/classes/Entity/Signup.php";
 require_once "$root/classes/Validator/Validation.php";
 require_once "$root/includes/session/session.php";
 
-
-
 class AddValidator extends Signup {
 
     private string $nameFirst;
@@ -24,7 +22,7 @@ class AddValidator extends Signup {
     public function addUser()
     {
 
-        $location = "/InternSpark/src/page/table.php";
+        $location = "/InternSpark/src/page/table.php.old";
 
         $_SESSION["try_create_name_first"] = $this->nameFirst;
         $_SESSION["try_create_email"] = $this->email;

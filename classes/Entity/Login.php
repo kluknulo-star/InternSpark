@@ -1,11 +1,7 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 include_once "$root/classes/DataBaseConnection/DataBasePDO.php";
-
-if (session_status() != PHP_SESSION_ACTIVE)
-{
-    session_start();
-}
+require_once "$root/includes/session/session.php";
 
 class Login extends DataBasePDO {
 
@@ -15,9 +11,6 @@ class Login extends DataBasePDO {
             ->prepare('SELECT name_first, password, role_name, deleted_at FROM users 
                              INNER JOIN roles USING(role_id) WHERE name_first = ? OR email = ?');
 
-//
-//        $statement = $this->connect()
-//            ->prepare('SELECT name_first, password FROM users WHERE name_first = ? OR email = ?');
         $location = '/InternSpark/src/page/login.php';
 
         if (!$statement->execute(array($uid, $uid))) {
@@ -29,7 +22,8 @@ class Login extends DataBasePDO {
         if ($statement->rowCount() == 0)
         {
             $statement = null;
-            header("location: $location?error=user_not_found");
+            $_SESSION["error"] = "user_not_found";
+            header("location: $location");
             exit();
         }
 
@@ -39,24 +33,22 @@ class Login extends DataBasePDO {
         if ($tableStatement[0]["deleted_at"])
         {
             $statement = null;
-            header("location: $location?error=user_deleted");
+            $_SESSION["error"] = "incorrect_user_or_password";
+            header("location: $location");
             exit();
         }
 
         if ($checkPassword)
         {
-            session_start();
           $_SESSION["uid"] = $tableStatement[0]["name_first"];
           $_SESSION["role_name"] = $tableStatement[0]["role_name"];
         }
         else
         {
             $statement = null;
-            header("location: $location?error=incorrect_user_or_password");
+            $_SESSION["error"] = "incorrect_user_or_password";
+            header("location: $location");
             exit();
         }
-
-
     }
-
 }

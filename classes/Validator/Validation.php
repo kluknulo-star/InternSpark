@@ -3,7 +3,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "$root/classes/Entity/Signup.php";
 
-class Validation {
+class Validation{
 
     public static function isFullInput($nameFirst, $password, $passwordRepeat, $email) : bool
     {
@@ -38,4 +38,7 @@ class Validation {
     {
         return $password == $passwordRepeat;
     }
+
+
+
 }

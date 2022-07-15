@@ -2,7 +2,7 @@
 
 class DataBasePDO {
 
-    protected function connect(){
+    protected static function connect(){
         try {
             $username = "root";
             $password = "kluknulo";
