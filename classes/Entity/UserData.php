@@ -15,7 +15,8 @@ class UserData extends DataBasePDO {
     const READ_SLICE = 'SELECT id,name_first, email, password, deleted_at, role_name  FROM users 
                         INNER JOIN roles using(role_id) LIMIT ?, ?;';
 
-    const COUNT_RECORDS = 'SELECT COUNT(*) FROM users';
+    const COUNT_RECORDS = 'SELECT COUNT(*) FROM users;';
+    const COUNT_RECORDS_FOR_USERS = 'SELECT COUNT(*) FROM users WHERE deleted_at IS NULL';
 
     const UPDATE_USER_PROFILE = 'UPDATE users SET name_first = ?, email = ?, role_id = ? WHERE id = ?;';
     const UPDATE_USER_PROFILE_WITH_PASSWORD = 'UPDATE users SET name_first = ?, email = ?, role_id = ?, password =? WHERE id = ?;';
@@ -33,9 +34,15 @@ class UserData extends DataBasePDO {
         return null;
     }
 
-    public function getCountTableRecords($table="users"): int
+    public function getCountTableRecords($role="admin"): int
     {
-        $statement = $this->connect()->prepare(self::COUNT_RECORDS);
+        if ($role == 'admin')
+        {
+            $statement = $this->connect()->prepare(self::COUNT_RECORDS);
+        } else {
+            $statement = $this->connect()->prepare(self::COUNT_RECORDS_FOR_USERS);
+        }
+
         $statement->execute();
 
         return $statement->fetchColumn();

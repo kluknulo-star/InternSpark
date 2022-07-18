@@ -21,7 +21,7 @@ class SignupValidator extends Signup {
     public function signupUser()
     {
 
-        $location = "../src/page/signup.php";
+        $location = "/register";
 
         $_SESSION["try_signup_name_first"] = $this->nameFirst;
         $_SESSION["try_signup_email"] = $this->email;
