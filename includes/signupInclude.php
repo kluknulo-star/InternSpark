@@ -13,9 +13,10 @@ if (isset($_POST["submit"])) {
     $email = $_POST["email"];
 
     //Check user in system
+    $location = "/users";
     if (isset($_SESSION["uid"])) {
         $_SESSION["error"] = "in_system";
-        header("location: /InternSpark/src/page/table.php.old");
+        header("location: $location");
         exit();
     }
 
@@ -29,9 +30,6 @@ if (isset($_POST["submit"])) {
     $userSessionRecord = UserHelper::findUser($nameFirst);
     $_SESSION["uid"] = $userSessionRecord->getNameFirst();
 
-
-//    var_dump($test->getEmail());
-    // Going to back front page
-    header("location: /InternSpark/src/page/table/table.php");
+    header("location: $location");
     exit();
 }

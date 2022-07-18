@@ -17,12 +17,12 @@ class LoginValidator extends Login {
     public function loginUser()
     {
         $_SESSION["try_login_uid"] = $this->uid;
-        $location = '/InternSpark/src/page/login.php';
+        $location = '/login';
 
         if(!Validation::isFullInputLogin($this->uid, $this->password)) {
             // echo "Empty input";
             $_SESSION["error"] = "empty_input";
-            header("location: $location?error=");
+            header("location: $location");
             exit();
         }
 

@@ -22,7 +22,7 @@ class AddValidator extends Signup {
     public function addUser()
     {
 
-        $location = "/InternSpark/src/page/table.php.old";
+        $location = "/users";
 
         $_SESSION["try_create_name_first"] = $this->nameFirst;
         $_SESSION["try_create_email"] = $this->email;

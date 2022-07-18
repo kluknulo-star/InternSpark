@@ -29,7 +29,7 @@ require_once "$root/includes/session/session.php";
 <?php
 if (isset($_SESSION["uid"]))
 {
-    header("location: /InternSpark/src/page/table/table.php");
+    header("location: /users");
     exit();
 }
 else
@@ -37,8 +37,8 @@ else
     ?>
 
     <div align="center">
-        <a href="login.php" class="btn btn-light">Вход</a>
-        <a href="signup.php" class="btn btn-success">Регистрация</a>
+        <a href="login" class="btn btn-light">Вход</a>
+        <a href="register" class="btn btn-success">Регистрация</a>
     </div>
 
     <?php

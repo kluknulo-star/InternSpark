@@ -27,7 +27,7 @@ class ProfileValidator extends Edit {
 
         $_SESSION["try_update_name_first"] = $this->nameFirst;
         $_SESSION["try_update_email"] = $this->email;
-        $location='/InternSpark/src/page/profile.php';
+        $location='/profile';
 
         if ($this->isMyselfProfile($this->id, $this->nameFirst, $this->email)){
             $_SESSION["error"] = "old_input";

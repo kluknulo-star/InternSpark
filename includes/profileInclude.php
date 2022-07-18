@@ -5,91 +5,34 @@ require_once "$root/classes/Entity/UserData.php";
 require_once "$root/includes/session/session.php";
 require_once "$root/classes/Helper/UserHelper.php";
 
-//function showSuccessAction($success_code)
-//{
-//
-//    $_SESSION["success"] = $success_code;
-//    $_SESSION["success_two"] = $success_code;
-////    header("location: table.php.old");
-//}
-//
-//function can_upload($file)
-//{
-//    // если имя пустое, значит файл не выбран
-//    if ($file['name'] == '')
-//        return 'Вы не выбрали файл.';
-//
-//    if ($file['size'] == 0)
-//        return 'Файл слишком большой.';
-//
-//    $getMime = explode('.', $file['name']);
-//
-//    $mime = strtolower(end($getMime));
-//
-//    $types = ['jpg', 'png', 'gif', 'bmp', 'jpeg'];
-//
-//    // если расширение не входит в список допустимых - return
-//    if (!in_array($mime, $types))
-//        return 'Недопустимый тип файла.';
-//
-//    return true;
-//}
-//
-//function make_upload($file)
-//{
-//    // формируем уникальное имя картинки: случайное число и name
-//    $name = mt_rand(0, 10000) . uniqid();
-//    var_dump($name);
-//    copy($file['tmp_name'], 'img/' . $name);
-//    $target = 'uploads/';
-//    move_uploaded_file($_FILES['file']['name'], $target);
-//}
-//if (isset($_FILES['file'])) {
-//    // проверяем, можно ли загружать изображение
-//
-//    var_dump($_FILES);
-//    $check = can_upload($_FILES['file']);
-//
-//    if ($check === true) {
-//        // загружаем изображение на сервер
-//        make_upload($_FILES['file']);
-//        echo "<strong>Файл успешно загружен!</strong>";
-//    } else {
-//            // выводим сообщение об ошибке
-//            echo "<strong>$check</strong>";
-//        }
-//    }
-
 function CheckImage($target_file, $imageFileType, $uploadOk, $target_dir)
 {
 // Check if file already exists
     if (file_exists($target_file)) {
-        $_SESSION["error"] = "Sorry, file already exists.";
+        $_SESSION["error"] = "file_exist";
         $uploadOk = 0;
     }
 
 // Check file size
     if ($_FILES["fileToUpload"]["size"] > 500000) {
-        $_SESSION["error"] = "Sorry, your file is too large.";
+        $_SESSION["error"] = "file_large";
         $uploadOk = 0;
     }
 
 // Allow certain file formats
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-        $_SESSION["error"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $_SESSION["error"] = "file_incorrect";
         $uploadOk = 0;
     }
 
 // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
-        $_SESSION["fatal_error"] = "Sorry, your file was not uploaded.";
+        $_SESSION["error"] = "fatal_error";
 // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            $_SESSION["error"] = "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
-
+            $_SESSION["success"] = "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
             $userInSystem = UserHelper::findUser($_SESSION["uid"]);
-
             if ($userInSystem->getAvatar()) {
                 unlink($target_dir . $userInSystem->getAvatar());
             }
@@ -105,14 +48,13 @@ if (isset($_POST["updateMyself"])) {
 
     var_dump($_FILES);
     if ($_FILES["fileToUpload"]["tmp_name"]) {
-        $target_dir = "image/";
+        $target_dir = "$root/src/page/image/";
         $_FILES["fileToUpload"]["name"] = uniqid().$_FILES["fileToUpload"]["name"];
         $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-
 
         if (!$check) {
             $_SESSION["error"] = "File is not an image";
@@ -122,7 +64,7 @@ if (isset($_POST["updateMyself"])) {
         CheckImage($target_file, $imageFileType, $uploadOk, $target_dir);
         unset($FILE);
 
-    $location = '/InternSpark/src/page/profile.php';
+    $location = '/profile';
     header("location: $location");
         exit();
     }
@@ -139,16 +81,17 @@ if (isset($_POST["updateMyself"])) {
     $_SESSION["uid"] = $nameFirst;
     $editUser->updateProfileUser();
 
-//    showSuccessAction("success_edit");
+    showSuccessAction("success_edit");
 
 }
 
 if (isset($_POST["deleteMyselfAvatar"])) {
     $userInSystem = UserHelper::findUser($_SESSION["uid"]);
 
-    $target_dir = "image/";
+//    $target_dir = "/src/page/image/";
+    $root_source = "$root/src/page/image/";
     if ($userInSystem->getAvatar()) {
-        unlink($target_dir . $userInSystem->getAvatar());
+        unlink($root_source . $userInSystem->getAvatar());
     }
     UserHelper::addAvatar($_SESSION["uid"], "");
 

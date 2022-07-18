@@ -13,15 +13,17 @@ if (isset($_POST["submit"]))
     $password = $_POST["pwd_login"];
     var_dump($_SESSION);
 
+    $location = "/users";
+
     if (isset($_SESSION["uid"])) {
         if ($_SESSION["error"] == "access_denied")
         {
             $_SESSION["error"] = "access_denied";
-            header("location: /InternSpark/src/page/page/table.php");
+            header("location: $location");
         }
         else{
             $_SESSION["error"] = "in_system";
-            header("location: /InternSpark/src/page/page/table.php");
+            header("location: $location");
         }
         exit();
     }
@@ -41,6 +43,6 @@ if (isset($_POST["submit"]))
 
     // Going to back front page
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-    header("location: ../src/page/table/table.php");
+    header("location: $location");
     exit();
 }

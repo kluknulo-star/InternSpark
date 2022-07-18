@@ -2,6 +2,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "$root/classes/DataBaseConnection/DataBasePDO.php";
 
+
 class Signup extends DataBasePDO {
 
     protected function setUser($nameFirst, $email, $password){
@@ -12,6 +13,7 @@ class Signup extends DataBasePDO {
 
         if (!$statement->execute(array($nameFirst, $email, $hashedPassword, 1))) {
             $statement = null;
+            //ToDo : Error in $_SESSION
             header("location: signup.php?error=statement_error_SET_USER");
             exit();
         }
@@ -26,6 +28,7 @@ class Signup extends DataBasePDO {
         //exist
         if (!$statement->execute(array($nameFirst, $email))) {
             $statement = null;
+            //ToDo : Error in $_SESSION
             header("location: signup.php?error=statement_error_CHECK_USER");
             exit();
         }

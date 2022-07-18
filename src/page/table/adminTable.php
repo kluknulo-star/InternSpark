@@ -9,7 +9,7 @@ $userInSystem = UserHelper::findUser($_SESSION["uid"]);
 
 if ($userInSystem->getRole() != "admin")
 {
-    header("location: table.php");
+    header("location: /users");
     exit();
 }
 
@@ -60,8 +60,9 @@ $UserData = new UserData();
                 <!--            here is rows-->
 
                 <?php
-                $source = "../image/";
-                if ($row->getAvatar() != "" && file_exists($source . $row->getAvatar()))
+                $source = "/src/page/image/";
+                $root_source = "$root/src/page/image/";
+                if ($row->getAvatar() != "" && file_exists($root_source . $row->getAvatar()))
                 {
                 $source .= $row->getAvatar();
                 } else{
@@ -211,6 +212,8 @@ $UserData = new UserData();
                     </div>
                     <div class="modal-body">
                         <!--                            <img class="rounded-circle" alt="default.svg" src="http://simpleicon.com/wp-content/uploads/user1.png"  data-holder-rendered="true">-->
+                        <img src="<?php echo $source ?>" alt="Avatar" class="img-fluid my-3"
+                             style="width: 200px; "/>
                         <p>Имя: <?php echo $row->getNameFirst() ?></p>
                         <p>Почта: <?php echo $row->getEmail() ?></p>
                     </div>
@@ -276,7 +279,6 @@ $UserData = new UserData();
         </div>
     </div>
 </div>
-
 
 <div class="d-flex justify-content-center">
     <?php echo $pagination; ?>

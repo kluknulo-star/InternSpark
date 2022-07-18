@@ -11,7 +11,7 @@ class Login extends DataBasePDO {
             ->prepare('SELECT name_first, password, role_name, deleted_at FROM users 
                              INNER JOIN roles USING(role_id) WHERE name_first = ? OR email = ?');
 
-        $location = '/InternSpark/src/page/login.php';
+        $location = '/login';
 
         if (!$statement->execute(array($uid, $uid))) {
             $statement = null;

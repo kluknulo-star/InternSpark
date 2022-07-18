@@ -30,7 +30,7 @@ class EditValidator extends Edit {
 
         $_SESSION["try_create_name_first"] = $this->nameFirst;
         $_SESSION["try_create_email"] = $this->email;
-        $location='/InternSpark/src/page/table/table.php';
+        $location='/users';
 
         if ($this->isMyself($this->id, $this->nameFirst, $this->email, $this->roleSet)){
             $_SESSION["error"] = "old_input";

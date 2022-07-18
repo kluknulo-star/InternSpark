@@ -13,11 +13,11 @@ function checkAccessAction($error_code)
 {
     if (isset($_SESSION["uid"]) && $_SESSION["role_name"] != "admin") {
             $_SESSION["error"] = $error_code;
-            header("location: /InternSpark/src/page/page/table.php");
+            header("location: /users");
             exit();
         } elseif (!isset($_SESSION["uid"])){
             $_SESSION["error"] = $error_code;
-            header("location: /InternSpark/src/page/login.php");
+            header("location: /users");
             exit();
         }
 }
@@ -27,7 +27,8 @@ function showSuccessAction($success_code)
 
     $_SESSION["success"] = $success_code;
     $_SESSION["success_two"] = $success_code;
-    header("location: table.php");
+    //ToDo: Check location to work;
+    header("location: /users");
 }
 
 function checkMyselfAction($error_code)
@@ -36,7 +37,7 @@ function checkMyselfAction($error_code)
     if ($_GET["id"] == $userInSystem->getId())
     {
         $_SESSION["error"] = $error_code;
-        header("location: /InternSpark/src/page/table/table.php");
+        header("location: /users");
         exit();
     }
 }
