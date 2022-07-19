@@ -2,11 +2,10 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once "$root/includes/signupInclude.php";
-require_once "$root/classes/Validator/EditUserValidator.php";
+require_once "$root/classes/EntityCourses/EditCourse.php";
 require_once "$root/includes/session/session.php";
 require_once "$root/classes/Helper/UserHelper.php";
-
-$UserData = new UserData();
+require_once "$root/classes/Entity/CourseData.php";
 
 
 function checkAccessAction($error_code)
@@ -22,48 +21,36 @@ function checkAccessAction($error_code)
         }
 }
 
-function showSuccessAction($success_code)
-{
-
-    $_SESSION["success"] = $success_code;
-    $_SESSION["success_two"] = $success_code;
-    //ToDo: Check location to work;
-    header("location: /users");
-}
-
-function checkMyselfAction($error_code)
-{
-    $userInSystem = UserHelper::findUser($_SESSION["uid"]);
-    if ($_GET["id"] == $userInSystem->getId())
-    {
-        $_SESSION["error"] = $error_code;
-        header("location: /users");
-        exit();
-    }
-}
+//function showSuccessAction($success_code)
+//{
+//
+//    $_SESSION["success"] = $success_code;
+//    $_SESSION["success_two"] = $success_code;
+//    //ToDo: Check location to work;
+//    header("location: /users");
+//}
+//
+//function checkMyselfAction($error_code)
+//{
+//    $userInSystem = UserHelper::findUser($_SESSION["uid"]);
+//    if ($_GET["id"] == $userInSystem->getId())
+//    {
+//        $_SESSION["error"] = $error_code;
+//        header("location: /users");
+//        exit();
+//    }
+//}
 
 if (isset($_POST['edit'])) {
-    $email = $_POST["email"];
-    $nameFirst = $_POST["firstName"];
-    $get_id = $_GET["id"];
-    $password = $_POST["pwd"];
-    $passwordRepeat = $_POST["pwdRepeat"];
+    $title = $_POST["title"];
+    $content = $_POST["content"];
+    $id = $_GET["id"];
 
-    if (isset($_POST["setAdmin"])){
-        $role_set = 2;
-    } else{
-        $role_set = 1;
-    }
+    $editUser = new EditCourse();
 
-    checkAccessAction("access_denied");
-
-    checkMyselfAction("access_myself_denied");
-
-    $editUser = new EditUserValidator($get_id, $nameFirst, $email, $password, $passwordRepeat, $role_set);
-
-    $editUser->editUser();
+    $editUser->updateCourse($title, $content, $id);
 //    $UserData->update($get_id, $nameFirst, $email,$role_set);
-    showSuccessAction("success_edit");
+//    showSuccessAction("success_edit");
 }
 
 
@@ -94,18 +81,24 @@ if (isset($_POST["add"])) {
 
 if (isset($_POST['delete'])) {
 
-    checkAccessAction("access_denied");
-    checkMyselfAction("access_myself_denied");
-    $get_id = $_GET["id"];
-    $UserData->delete($get_id);
-    showSuccessAction("success_delete");
+//    checkAccessAction("access_denied");
+//    checkMyselfAction("access_myself_denied");
+    $id = $_GET["id"];
+
+    $editUser = new EditCourse();
+
+    $editUser->deleteCourse($id);
+//    showSuccessAction("success_delete");
 }
 
 if (isset($_POST['recover'])) {
 
-    checkAccessAction("access_denied");
+//    checkAccessAction("access_denied");
 
-    $get_id = $_GET["id"];
-    $UserData->recover($get_id);
-    showSuccessAction("success_recover");
+    $id = $_GET["id"];
+//    $UserData->recover($get_id);
+    $editUser = new EditCourse();
+
+    $editUser->recoverCourse($id);
+//    showSuccessAction("success_recover");
 }

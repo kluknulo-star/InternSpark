@@ -10,7 +10,7 @@ $userInSystem = UserHelper::findUser($_SESSION["uid"]);
 $UserData = new UserData();
 
 if ($userInSystem->getRole() == "admin") {
-    header("location: table.php");
+    header("location: tableUsers.php");
     exit();
 }
 
@@ -32,7 +32,7 @@ if ($userInSystem->getRole() == "admin") {
 
     //    here is Table
 
-    $page = $_GET['page'] ?? 1;
+    $page = $_GET['view'] ?? 1;
     $per_page = 10;
     $total = $UserData->getCountTableRecords("user");
 
@@ -51,8 +51,8 @@ if ($userInSystem->getRole() == "admin") {
             <tr>
                 <!--            here is rows-->
                 <?php
-                $source = "/src/page/image/";
-                $root_source = "$root/src/page/image/";
+                $source = "/src/view/image/";
+                $root_source = "$root/src/view/image/";
                 if ($row->getAvatar() != "" && file_exists($root_source . $row->getAvatar())) {
                     $source .= $row->getAvatar();
                 } else {

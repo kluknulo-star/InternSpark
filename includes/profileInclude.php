@@ -48,7 +48,7 @@ if (isset($_POST["updateMyself"])) {
 
     var_dump($_FILES);
     if ($_FILES["fileToUpload"]["tmp_name"]) {
-        $target_dir = "$root/src/page/image/";
+        $target_dir = "$root/src/view/image/";
         $_FILES["fileToUpload"]["name"] = uniqid().$_FILES["fileToUpload"]["name"];
         $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
@@ -88,8 +88,8 @@ if (isset($_POST["updateMyself"])) {
 if (isset($_POST["deleteMyselfAvatar"])) {
     $userInSystem = UserHelper::findUser($_SESSION["uid"]);
 
-//    $target_dir = "/src/page/image/";
-    $root_source = "$root/src/page/image/";
+//    $target_dir = "/src/view/image/";
+    $root_source = "$root/src/view/image/";
     if ($userInSystem->getAvatar()) {
         unlink($root_source . $userInSystem->getAvatar());
     }

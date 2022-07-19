@@ -1,6 +1,6 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once "$root/classes/DataBaseConnection/DataBasePDO.php";
+require_once "$root/classes/config/DataBasePDO.php";
 
 class Edit extends DataBasePDO
 {
@@ -9,6 +9,17 @@ class Edit extends DataBasePDO
             ->prepare('UPDATE users SET name_first=?, email=?,password=?,role_id=? WHERE id=?;');
 
         if (!$statement->execute(array($nameFirst, $email, $password, $roleId, $id))) {
+            $statement = null;
+            header("location: signup.php?error=statement_error_SET_USER");
+            exit();
+        }
+    }
+
+    protected function updateUserWithoutPassword($id, $nameFirst, $email, $roleId){
+        $statement = $this->connect()
+            ->prepare('UPDATE users SET name_first=?, email=?,role_id=? WHERE id=?;');
+
+        if (!$statement->execute(array($nameFirst, $email, $roleId, $id))) {
             $statement = null;
             header("location: signup.php?error=statement_error_SET_USER");
             exit();

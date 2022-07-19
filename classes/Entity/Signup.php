@@ -1,6 +1,6 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once "$root/classes/DataBaseConnection/DataBasePDO.php";
+require_once "$root/classes/config/DataBasePDO.php";
 
 
 class Signup extends DataBasePDO {

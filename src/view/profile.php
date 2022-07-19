@@ -13,8 +13,8 @@ if (empty($_SESSION) || !isset($_SESSION["uid"])) {
 
 $userInSystem = UserHelper::findUser($_SESSION["uid"]);
 
-$source = "/src/page/image/";
-$root_source = "$root/src/page/image/";
+$source = "/src/view/image/";
+$root_source = "$root/src/view/image/";
 
 if ($userInSystem->getAvatar() != "" && file_exists($root_source . $userInSystem->getAvatar()))
 {

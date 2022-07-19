@@ -5,7 +5,7 @@ require_once "$root/classes/Entity/UserData.php";
 require_once "$root/classes/Validator/Validation.php";
 require_once "$root/classes/Entity/Edit.php";
 
-class EditValidator extends Edit {
+class EditUserValidator extends Edit {
 
     private int $id;
     private string $nameFirst;
@@ -81,9 +81,11 @@ class EditValidator extends Edit {
             exit();
         }
 
-
-        $this->updateUser($this->id, $this->nameFirst, $this->email, $this->password, $this->roleSet);
-
+        if ($this->password == "" && $this->passwordRepeat == "") {
+            $this->updateUserWithoutPassword($this->id, $this->nameFirst, $this->email, $this->roleSet);
+        } else {
+            $this->updateUser($this->id, $this->nameFirst, $this->email, $this->password, $this->roleSet);
+        }
     }
 
     private function uidTakenCheck() : bool

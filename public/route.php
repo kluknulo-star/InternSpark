@@ -18,15 +18,15 @@ if (count($segments) == 1)
             $file = 'signup.php';
             break;
         case '/users':
-            $file = 'table/table.php';
+            $file = 'tableUsers/table.php';
             break;
         case '/profile':
             $file = 'profile.php';
             break;
     }
 
-if (count($segments) > 1) {
 
+if (count($segments) > 0) {
     $uriPage = $segments[0];
     switch ($uriPage) {
         case 'login':
@@ -36,7 +36,7 @@ if (count($segments) > 1) {
             $file = 'signup.php';
             break;
         case 'users':
-            $file = 'table/table.php';
+            $file = 'tableUsers/table.php';
             break;
         case 'profile':
             $file = 'profile.php';
@@ -44,10 +44,13 @@ if (count($segments) > 1) {
     }
 }
 
+if ($segments[0] == 'users' && $segments[2] == 'courses'){
+    $file = 'tableCourses/table.php';
+}
 
 if ($file != "") {
-    require_once "$root/src/page/$file";
+    require_once "$root/src/view/$file";
 } else {
-    require_once "$root/src/page/404.html";
+    require_once "$root/src/view/404.html";
 }
 

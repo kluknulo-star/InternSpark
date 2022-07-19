@@ -1,6 +1,6 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-include_once "$root/classes/DataBaseConnection/DataBasePDO.php";
+include_once "$root/classes/config/DataBasePDO.php";
 require_once "$root/includes/session/session.php";
 
 class Login extends DataBasePDO {

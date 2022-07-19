@@ -41,7 +41,7 @@ if (isset($_POST["submit"]))
     $userSessionRecord = UserHelper::findUser($uid);
     $_SESSION["uid"] = $userSessionRecord->getNameFirst();
 
-    // Going to back front page
+    // Going to back front view
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
     header("location: $location");
     exit();

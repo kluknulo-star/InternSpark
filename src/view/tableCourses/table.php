@@ -2,7 +2,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once "$root/classes/Entity/UserRecord.php";
+require_once "$root/classes/Entity/CourseRecord.php";
 require_once "$root/src/constant/tableActionAlert.php";
 require_once "$root/includes/session/session.php";
 require_once "$root/classes/Helper/UserHelper.php";
@@ -87,21 +87,24 @@ $userInSystem = UserHelper::findUser($_SESSION["uid"]);
 
         <a href="../../../includes/logoutInclude.php" class="btn btn-danger">LOGOUT</a>
         <a href="/profile" class="btn btn-primary">Profile</a>
+        <a href="/users" class="btn btn-light">Пользователи</a>
     </form>
 
     <?php
-    if ($userInSystem->getRole() == "admin") {
-        require_once "$root/src/page/table/adminTable.php";
-    } else {
-        require_once "$root/src/page/table/userTable.php";
-    }
-
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $segments = explode('/', trim($uri, '/'));
 
-    if (count($segments) > 1) {
-        require_once "$root/src/page/table/restTable.php";
+
+    if ($userInSystem->getId() == $segments[1]) {
+        require_once "$root/src/view/tableCourses/adminTable.php";
+    } else {
+        require_once "$root/src/view/tableCourses/userTable.php";
     }
+
+
+//    if (count($segments) > 1) {
+//        require_once "$root/src/view/tableCourses/restTable.php";
+//    }
     ?>
 
 
