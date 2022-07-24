@@ -3,8 +3,17 @@ namespace app\Users\Controller;
 
 class BaseController
 {
-    public function render($path)
+    public function render(string $path) : void
     {
-        require APP_ROOT_DIRECTORY . $path;
+        require_once APP_ROOT_DIRECTORY . $path;
+    }
+
+    public function redirect(string $location, $error = "")
+    {
+        if ($error != ""){
+            $_SESSION["error"] = $error;
+        }
+        header("location: " . "/" . $location);
+        exit();
     }
 }

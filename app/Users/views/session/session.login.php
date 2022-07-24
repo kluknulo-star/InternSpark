@@ -32,7 +32,6 @@
         <div class="mask d-flex align-items-center h-100 gradient-custom-3">
             <div class="container h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
-
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6">
 
                         <!--                            Alert Error-->
@@ -73,7 +72,7 @@
 
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" name="submit"
-                                                class="btn btn-success btn-block btn-lg">Войти
+                                                    class="btn btn-success btn-block btn-lg">Войти
                                         </button>
                                     </div>
 

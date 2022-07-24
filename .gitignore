@@ -1,3 +1,5 @@
 .idea/
 .includes/generator.php.old
 .DimaTask/
+.env
+config/DataBase.php

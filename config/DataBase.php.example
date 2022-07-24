@@ -1,0 +1,27 @@
+<?php
+class DataBase
+{
+    public static function connect()
+    {
+        try {
+            $username = "";
+            $password = "";
+            $host = "";
+            $dbname = "";
+            $dph = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+            return $dph;
+        } catch (PDOException $e) {
+            var_dump($username);
+            var_dump($password);
+            var_dump($host);
+            var_dump($dbname);
+            echo "Error!" . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
+
+
+}
+
+$newDB = new DataBase();
+$newDB->connect();

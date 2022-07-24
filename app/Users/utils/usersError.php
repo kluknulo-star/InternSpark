@@ -22,7 +22,8 @@ const ALL_TABLE_ARRAY = [
     "user_or_mail_taken" => "Пользователь уже существует",
     "user_deleted" => "Аккаунт удален",
     "session_not_found" => "Авторизируйтесь в системе",
-    "success_add" => "Пользователь добавлен в систему",
+    "success_create" => "Пользователь добавлен в систему",
+    "success_register" => "Вы успешно зарегестрировались",
     "success_delete" => "Пользователь удален",
     "success_edit" => "Пользователь изменен",
     "success_recover" => "Пользователь восстановлен",
@@ -32,5 +33,6 @@ const ALL_TABLE_ARRAY = [
     "file_large" => "Sorry, your file is too large.",
     "file_incorrect" => "Sorry, only JPG, JPEG, PNG  files are allowed.",
     "fatal_error" => "Sorry, your file was not uploaded.",
+    "delete_myself" => "Разве это выход?",
 
 ];
