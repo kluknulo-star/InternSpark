@@ -114,6 +114,16 @@ class UserModel
         return true;
     }
 
+    public static function addAvatar($uid, $avatar)
+    {
+        $statement = DataBase::connect()->prepare('UPDATE users SET avatar=? WHERE email=? OR name_first=?;');
+        $statement->execute([$avatar, $uid, $uid]);
+    }
+    public static function deleteAvatar($uid)
+    {
+        $statement = DataBase::connect()->prepare('UPDATE users SET avatar="" WHERE (email=? OR name_first=?)');
+        $statement->execute([$uid, $uid]);
+    }
 
 
 }

@@ -23,8 +23,7 @@ class UsersController extends BaseController
 {
     private function checkUserInSystem()
     {
-        if (!UserHelper::isUserInSystem())
-        {
+        if (!UserHelper::isUserInSystem()) {
             $_SESSION["error"] = "access_denied";
             $this->redirect("login");
         }
@@ -91,7 +90,7 @@ class UsersController extends BaseController
                 $UserName = UserHelper::findUser($nameFirst);
                 $UserEmail = UserHelper::findUser($email);
 
-                if (!$UserName && !$UserEmail){
+                if (!$UserName && !$UserEmail) {
                     UserModel::createUser($nameFirst, $email, $password);
                     $_SESSION["success"] = "success_create";
                     unset ($_SESSION["try_create_name_first"]);
@@ -124,9 +123,9 @@ class UsersController extends BaseController
             $nameFirst = $_POST["uid"];
             $password = $_POST["pwd"];
             $passwordRepeat = $_POST["pwdRepeat"];
-            if (isset($_POST["setAdmin"])){
+            if (isset($_POST["setAdmin"])) {
                 $role_set = 2;
-            } else{
+            } else {
                 $role_set = 1;
             }
 
@@ -138,7 +137,7 @@ class UsersController extends BaseController
 
                 $UserEntity = UserHelper::findUserFromId($userId);
 
-                if (!UserHelper::checkUpdateUser($UserEntity->getNameFirst(), $UserEntity->getEmail(), $UserEntity->getId())){
+                if (!UserHelper::checkUpdateUser($UserEntity->getNameFirst(), $UserEntity->getEmail(), $UserEntity->getId())) {
                     UserModel::updateUser($UserEntity->getId(), $nameFirst, $email, $role_set, $password);
                     $_SESSION["success"] = "success_edit";
                     unset ($_SESSION["try_edit_name_first"]);
@@ -167,12 +166,9 @@ class UsersController extends BaseController
 
         var_dump($userInSystem->getId());
         var_dump($userId);
-        if ($userInSystem->getId() === $userId)
-        {
-            $_SESSION["error"]="delete_myself";
-        }
-        else
-        {
+        if ($userInSystem->getId() === $userId) {
+            $_SESSION["error"] = "delete_myself";
+        } else {
             UserModel::delete($userId);
         }
 
@@ -192,13 +188,80 @@ class UsersController extends BaseController
 
     public function profile()
     {
-        $this->checkToPermission();
-
+        $this->checkUserInSystem();
         $UsersEditService = new UsersEditService();
+
+        if (isset($_POST["submit"])) {
+
+            var_dump($_FILES);
+            if (isset($_FILES["fileToUpload"]["tmp_name"]) && $_FILES["fileToUpload"]["tmp_name"]) {
+                $target_dir = APP_ROOT_DIRECTORY . "/public/images/avatars/";
+                $_FILES["fileToUpload"]["name"] = uniqid() . $_FILES["fileToUpload"]["name"];
+                $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+                $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+
+                if (!$check) {
+                    $_SESSION["error"] = "File is not an image";
+                }
+
+                if ($UsersEditService->checkImage($target_file, $imageFileType, $target_dir)) {
+                    UserModel::addAvatar($_SESSION["uid"], $_FILES["fileToUpload"]["name"]);
+                }
+                unset($FILE);
+
+//                $this->redirect("profile");
+            }
+
+            $userInSystem = UserHelper::findUser($_SESSION["uid"]);
+
+            $email = $_POST["email"];
+            $nameFirst = $_POST["firstName"];
+            $userId = $userInSystem->getId();
+
+            $password = $_POST["pwd"];
+            $passwordRepeat = $_POST["pwdRepeat"];
+
+            $isValidProfileAction = EditUserValidator::check($nameFirst, $email, $password, $passwordRepeat);
+            var_dump($_SESSION);
+//            echo
+
+            if ($isValidProfileAction) {
+
+                $UserEntity = UserHelper::findUserFromId($userId);
+
+                if ($UserEntity->getRole() === 'admin') {
+                    $role_set = 2;
+                } else {
+                    $role_set = 1;
+                }
+
+                if (!UserHelper::checkUpdateUser($UserEntity->getNameFirst(), $UserEntity->getEmail(), $UserEntity->getId())) {
+                    UserModel::updateUser($UserEntity->getId(), $nameFirst, $email, $role_set, $password);
+                    $_SESSION["success"] = "success_edit";
+                    $_SESSION["uid"] = $nameFirst;
+                    unset ($_SESSION["try_profile_name_first"]);
+                    unset ($_SESSION["try_profile_email"]);
+//                    $this->redirect("users");
+                } else {
+                    $_SESSION["error"] = "user_or_mail_taken";
+                }
+            }
+            $this->redirect("profile");
+        }
+
+        if (isset($_POST["deleteMyselfAvatar"])) {
+            $userInSystem = UserHelper::findUser($_SESSION["uid"]);
+
+            $target_dir = APP_ROOT_DIRECTORY . "/public/images/avatars/";
+            if ($userInSystem->getAvatar()) {
+                unlink(APP_ROOT_DIRECTORY . $userInSystem->getAvatar());
+            }
+            UserModel::addAvatar($_SESSION["uid"], "");
+        }
 
         $row = $UsersEditService->getUserInSystem();
         require_once APP_ROOT_DIRECTORY . "app/Users/views/users/profile.php";
     }
-
-
 }

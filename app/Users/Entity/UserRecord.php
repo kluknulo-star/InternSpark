@@ -7,17 +7,17 @@ class UserRecord {
     private string $nameFirst;
     private string $email;
     private string $password;
-    private $deleted_at;
-    private string $role_name;
+    private $deletedAt;
+    private string $roleName;
     private $avatar;
 
-    public function __construct($id, $nameFirst, $email, $password, $deleted_at, $role_name, $avatar=""){
+    public function __construct($id, $nameFirst, $email, $password, $deletedAt, $roleName, $avatar=""){
         $this->id = $id;
         $this->nameFirst = $nameFirst;
         $this->email = $email;
         $this->password = $password;
-        $this->deleted_at = $deleted_at;
-        $this->role_name = $role_name;
+        $this->deletedAt = $deletedAt;
+        $this->roleName = $roleName;
         $this->avatar = $avatar;
     }
 
@@ -38,7 +38,7 @@ class UserRecord {
 
     public function getRole() : string
     {
-        return $this->role_name;
+        return $this->roleName;
     }
 
     public function getAvatar()
@@ -63,7 +63,7 @@ class UserRecord {
 
     public function isDeleted() : bool
     {
-        return (bool)$this->deleted_at;
+        return (bool)$this->deletedAt;
     }
 
 
@@ -74,8 +74,8 @@ class UserRecord {
         return ("<td>" . $this->id . "</td>" .
             "<td>" . $this->nameFirst . "</td>" .
             "<td>" . $this->email . "</td>" .
-            "<td>" . $this->deleted_at . "</td>".
-            "<td>" . $this->role_name . "</td>"
+            "<td>" . $this->deletedAt . "</td>".
+            "<td>" . $this->roleName . "</td>"
         );
     }
 
@@ -84,7 +84,7 @@ class UserRecord {
         return ("<td>" . $this->id . "</td>" .
             "<td>" . $this->nameFirst . "</td>" .
             "<td>" . $this->email . "</td>" .
-            "<td>" . $this->role_name . "</td>"
+            "<td>" . $this->roleName . "</td>"
         );
     }
 }

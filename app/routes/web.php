@@ -1,5 +1,5 @@
 <?php
-
+//require_once APP_ROOT_DIRECTORY . "/app/routes/webCourse.php";
 $webRoutes = [
     /** @see \app\Users\Controller\UsersController::index() */
     '' => 'app/Users/Controller/UsersController@index',
@@ -36,6 +36,9 @@ $webRoutes = [
 
     /** @see \app\Users\Controller\SessionController::register() */
     'register' => 'app/Users/Controller/SessionController@register',
+
+    /** @see \app\Courses\Controller\CourseController::index() */
+    'courses' => 'app/Courses/Controller/CourseController@index',
 
 
 ];

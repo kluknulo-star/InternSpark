@@ -25,10 +25,14 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-9 col-lg-7 col-xl-6">
 
+                <!--    Alert window-->
+                <?php require_once APP_ROOT_DIRECTORY . "app/Users/views/utils/alertWindow.php" ?>
+                <!--    Alert window-->
+
                 <div class="card" style="border-radius: 15px;">
                     <div class="card-body p-4">
 
-                        <form action="?id=<?php echo $row->getId() ?>" method="post">
+                        <form action="/profile" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <h2 align="center">  Мой профиль </h2>
                             </div>
@@ -66,7 +70,7 @@
                             </div>
                             <div class="d-flex justify-content-center">
                                 <div class="mb-3 form-check">
-                                    <button type="submit" class="btn btn-dark btn-block btn-lg">Применить</button>
+                                    <button type="submit" class="btn btn-dark btn-block btn-lg" name="submit">Применить</button>
                                     <a href="/users" type="submit" class="btn btn-light btn-block btn-lg">Вернуться</a>
                                 </div>
                             </div>

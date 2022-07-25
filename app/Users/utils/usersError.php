@@ -31,7 +31,7 @@ const ALL_TABLE_ARRAY = [
     "access_myself_denied" => "Пользователь в системе может внести изменения только в профиле",
     "file_exist" => "Sorry, file already exists.",
     "file_large" => "Sorry, your file is too large.",
-    "file_incorrect" => "Sorry, only JPG, JPEG, PNG  files are allowed.",
+    "file_incorrect" => "Некорректный формат фотографии",
     "fatal_error" => "Sorry, your file was not uploaded.",
     "delete_myself" => "Разве это выход?",
 

@@ -61,7 +61,7 @@ $userInSystem = $UsersTableService->getUserInSystem();
 
         <a href="/logout" class="btn btn-danger">LOGOUT</a>
         <a href="/profile" class="btn btn-primary">Profile</a>
-        <a href="/users/<?php echo $userInSystem->getId()?>/courses" class="btn btn-light">Мои курсы</a>
+        <a href="/courses" class="btn btn-light">Мои курсы</a>
     </form>
 
     <?php
