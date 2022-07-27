@@ -12,8 +12,17 @@ include APP_ROOT_DIRECTORY . "app/Users/utils/usersError.php";
 
 bootApp();
 
+
+function autoloadClass(){
+    spl_autoload_register(function ($className) {
+        $className = str_replace('\\', '/', $className);
+        require_once(APP_ROOT_DIRECTORY . $className . '.php');
+    });
+}
+
 function bootApp() {
     $requestUri = $_SERVER['REQUEST_URI'];
+    autoloadClass();
     $router = new Router();
     $router->route($requestUri);
 }

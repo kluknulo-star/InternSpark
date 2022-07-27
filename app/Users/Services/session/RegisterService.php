@@ -1,8 +1,6 @@
 <?php
 
-namespace app\Users\Models;
-require_once APP_ROOT_DIRECTORY . '/app/Users/Validator/LoginValidator.php';
-
+namespace app\Users\Services\session;
 
 class RegisterService
 {

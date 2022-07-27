@@ -1,5 +1,5 @@
 <?php
-namespace app\Users\Models;
+namespace app\Users\Services\session;
 
 class LoginService
 {

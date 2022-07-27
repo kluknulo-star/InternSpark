@@ -1,8 +1,12 @@
 <?php
-require_once APP_ROOT_DIRECTORY . "app/Users/Entity/UserRecord.php";
-require_once APP_ROOT_DIRECTORY . "config/DataBase.php";
 
-class UserHelper extends DataBase
+namespace app\Core\Helpers;
+
+use app\Users\Entity\UserRecord;
+use config\DataBase;
+use PDO;
+
+class   UserHelper extends DataBase
 {
 
     const FIND_USER_RECORD = 'SELECT id,name_first, email, password, deleted_at, role_name, avatar  
@@ -67,6 +71,11 @@ class UserHelper extends DataBase
     public static function isUserInSystem() : bool
     {
         return isset($_SESSION["uid"]);
+    }
+
+    public static function idUserInSystem() : string
+    {
+        return $_SESSION["uid"];
     }
 
     public static function userIsAdmin() : bool

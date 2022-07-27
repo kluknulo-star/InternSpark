@@ -1,9 +1,8 @@
 <?php
 
+namespace app\Users\Services\users;
+use app\Core\Helpers\UserHelper;
 use app\Users\Models\UserModel;
-
-require_once APP_ROOT_DIRECTORY . "app/Core/Helpers/UserHelper.php";
-require_once APP_ROOT_DIRECTORY . "app/Users/Models/UserModel.php";
 
 class UsersEditService
 {

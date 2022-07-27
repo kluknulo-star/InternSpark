@@ -1,4 +1,5 @@
 <?php
+namespace app\Users\Entity;
 
 class UserRecord {
 

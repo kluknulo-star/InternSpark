@@ -1,9 +1,5 @@
 <?php
-
-use Validator\Validation;
-
-require_once APP_ROOT_DIRECTORY . "/app/Users/Validator/Validation.php";
-
+namespace app\Users\Validator;
 
 class AddUserValidator{
 

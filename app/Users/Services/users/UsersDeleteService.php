@@ -1,5 +1,5 @@
 <?php
-require_once APP_ROOT_DIRECTORY . "app/Core/Helpers/UserHelper.php";
+namespace app\Users\Services\users;
 
 class UsersDeleteService
 {

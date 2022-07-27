@@ -54,6 +54,7 @@ class Router
                 return [$action, $params];
             }
         }
+//        var_dump($requestUri);
         header("location: /error");
         exit();
 //        throw new \Exception('Path not found');

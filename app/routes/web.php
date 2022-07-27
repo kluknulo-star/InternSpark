@@ -39,6 +39,36 @@ $webRoutes = [
 
     /** @see \app\Courses\Controller\CourseController::index() */
     'courses' => 'app/Courses/Controller/CourseController@index',
+    'users/(\d+)/courses' => 'app/Courses/Controller/CourseController@index',
+
+    /** @see \app\Courses\Controller\CourseController::create() */
+    'courses/create' => 'app/Courses/Controller/CourseController@create',
+
+    /** @see \app\Courses\Controller\CourseController::edit() */
+    'courses/(\d+)/edit' => 'app/Courses/Controller/CourseController@edit',
+
+    /** @see \app\Courses\Controller\CourseController::delete() */
+    'courses/(\d+)/delete' => 'app/Courses/Controller/CourseController@delete',
+
+    /** @see \app\Courses\Controller\CourseController::restore() */
+    'courses/(\d+)/restore' => 'app/Courses/Controller/CourseController@restore',
+
+    /** @see \app\Courses\Controller\CourseController::view() */
+    'courses/(\d+)' => 'app/Courses/Controller/CourseController@view',
+    'courses/(\d+)/view' => 'app/Courses/Controller/CourseController@view',
+    'users/(\d+)/courses/(\d+)' => 'app/Courses/Controller/CourseController@view',
+
+    /** @see \app\Courses\Controller\CourseController::addCards() */
+    'test' => 'app/Courses/Controller/CourseController@addCards',
+
+    /** @see \app\Courses\Controller\CourseController::listCards() */
+    'courses/(\d+)/content' => 'app/Courses/Controller/CourseController@listCards',
+
+    /** @see \app\Courses\Controller\CourseController::createCard() */
+    'courses/(\d+)/content/create' => 'app/Courses/Controller/CourseController@createCard',
+
+
+
 
 
 ];

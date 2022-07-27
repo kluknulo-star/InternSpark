@@ -1,5 +1,6 @@
 <?php
 
+namespace app\Core\Helpers;
 
 class Pagination
 {
@@ -18,6 +19,7 @@ class Pagination
     {
         $this->count_pages = $this->get_count_pages();
         $this->current_page = $this->get_current_page();
+        $this->checkPageInURI();
         $this->uri = $this->get_params();
         $this->mid_size = $this->get_mid_size();
     }
@@ -37,18 +39,25 @@ class Pagination
         return ceil($this->total / $this->per_page) ?: 1;
     }
 
-    public function get_current_page(): int
+    public function checkPageInURI()
     {
 
+        $requestUri = $_SERVER['REQUEST_URI'];
+        $requestUri = explode("?", $requestUri)[0];
         if ($this->page < 1) {
-            header("location: /users");
+            echo "check";
+            header("location: $requestUri");
             exit();
         }
         if ($this->page > $this->count_pages) {
-            header("location: /users?page=$this->count_pages");
+            echo "check page > count";
+            header("location: $requestUri?page=$this->count_pages");
             exit();
         }
+    }
 
+    public function get_current_page(): int
+    {
         return $this->page;
     }
 

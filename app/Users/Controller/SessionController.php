@@ -2,20 +2,13 @@
 
 namespace app\Users\Controller;
 
-use AddUserValidator;
-use app\Users\Models\LoginService;
-use app\Users\Models\LogoutService;
+use app\Users\Services\session\LogoutService;
+
+
 use app\Users\Models\UserModel;
-use UserHelper;
-use Validator\LoginValidator;
-
-require_once 'BaseController.php';
-require_once APP_ROOT_DIRECTORY . '/app/Core/Helpers/UserHelper.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Services/session/LogoutService.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Validator/LoginValidator.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Models/UserModel.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Validator/AddUserValidator.php';
-
+use app\Core\Helpers\UserHelper;
+use app\Users\Validator\AddUserValidator;
+use app\Users\Validator\LoginValidator;
 
 class SessionController extends BaseController
 {

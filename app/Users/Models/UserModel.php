@@ -3,10 +3,8 @@ namespace app\Users\Models;
 // get user
 // create user
 
-use DataBase;
+use config\DataBase;
 use PDO;
-
-require_once APP_ROOT_DIRECTORY . '/config/DataBase.php';
 
 class UserModel
 {

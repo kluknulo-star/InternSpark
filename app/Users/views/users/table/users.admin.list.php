@@ -39,7 +39,6 @@ if ($userInSystem->getRole() != "admin")
     $total = $UsersTableService->getCountTableRecords();
 
     $pagination = $UsersTableService->createPagination((int)$page, $per_page, $total);
-//    $pagination = new Pagination((int)$page, $per_page, $total);
     $start = $pagination->get_start();
 
 

@@ -2,22 +2,14 @@
 
 namespace app\Users\Controller;
 
-use AddUserValidator;
+use app\Users\Services\users\UsersTableService;
+use app\Users\Validator\AddUserValidator;
 use app\Users\Models\UserModel;
-use EditUserValidator;
-use UserHelper;
-use UsersCreateService;
-use UsersEditService;
-use UsersViewService;
-
-require_once APP_ROOT_DIRECTORY . '/app/Users/Controller/BaseController.php';
-require_once APP_ROOT_DIRECTORY . '/app/Core/Helpers/UserHelper.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Services/users/UsersTableService.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Services/users/UsersViewService.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Services/users/UsersEditService.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Services/users/UsersCreateService.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Validator/EditUserValidator.php';
-require_once APP_ROOT_DIRECTORY . '/app/Users/Validator/AddUserValidator.php';
+use app\Users\Validator\EditUserValidator;
+use app\Core\Helpers\UserHelper;
+use app\Users\Services\users\UsersCreateService;
+use app\Users\Services\users\UsersEditService;
+use app\Users\Services\users\UsersViewService;
 
 class UsersController extends BaseController
 {
@@ -50,7 +42,7 @@ class UsersController extends BaseController
     {
         $this->checkUserInSystem();
 
-        $UsersTableService = new \UsersTableService();
+        $UsersTableService = new UsersTableService();
 
         require_once APP_ROOT_DIRECTORY . "app/Users/views/users/table/users.list.php";
     }

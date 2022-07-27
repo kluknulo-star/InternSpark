@@ -1,9 +1,6 @@
 <?php
 
-use Validator\Validation;
-
-require_once APP_ROOT_DIRECTORY . "/app/Users/Validator/Validation.php";
-//require_once APP_ROOT_DIRECTORY . "/app/users/Validator/Validation.php";
+namespace app\Users\Validator;
 
 class EditUserValidator {
 

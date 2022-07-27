@@ -1,7 +1,9 @@
 <?php
 
-require_once APP_ROOT_DIRECTORY . "config/DataBase.php";
-require_once 'UserRecord.php';
+namespace app\Users\Entity;
+
+use config\DataBase;
+use PDO;
 
 class UserData {
 

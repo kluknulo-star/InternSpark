@@ -1,10 +1,3 @@
-<?php
-
-
-$userInSystem = $UsersTableService->getUserInSystem();
-
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,7 +5,7 @@ $userInSystem = $UsersTableService->getUserInSystem();
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Users list</title>
+    <title>Document</title>
     <!-- CSS only -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -47,13 +40,13 @@ $userInSystem = $UsersTableService->getUserInSystem();
 <div class="container-fluid">
 
     <!--    Alert window-->
-    <?php require_once APP_ROOT_DIRECTORY . "app/Users/views/utils/alertWindow.php"?>
+    <?php require_once APP_ROOT_DIRECTORY . "app/Courses/views/utils/alertWindow.php" ?>
     <!--    Alert window-->
 
     <!-- Unset Session Variable -->
-    <?php require_once APP_ROOT_DIRECTORY . "app/Users/views/utils/unsetSessionVariable.php"?>
+    <?php require_once APP_ROOT_DIRECTORY . "app/Courses/views/utils/unsetSessionVariable.php"?>
     <!-- Unset Session Variable -->
-    <br>
+
     <form class="container-fluid">
         <span class="navbar-text ">
             User in system <b>Name:</b> <?php echo " " . $userInSystem->getNameFirst() . " " ?>  <b>Type_user:</b> <?php echo " " . $userInSystem->getRole() . " " ?>
@@ -61,26 +54,23 @@ $userInSystem = $UsersTableService->getUserInSystem();
 
         <a href="/logout" class="btn btn-danger">LOGOUT</a>
         <a href="/profile" class="btn btn-primary">Profile</a>
-        <a href="/courses" class="btn btn-light">Мои курсы</a>
+        <a href="/users" class="btn btn-light">Пользователи</a>
     </form>
 
     <?php
-    if ($userInSystem->getRole() == "admin") {
-        require_once "users.admin.list.php";
+
+    if (!$userId) {
+        $userId = $userInSystem->getId();
+    }
+    if ($userInSystem->getId() == $userId || (!$userId && $userInSystem->getId())) {
+
+        require_once APP_ROOT_DIRECTORY. "/app/Courses/views/table/adminTable.php";
     } else {
-        require_once "users.user.list.php";
+        require_once APP_ROOT_DIRECTORY. "/app/Courses/views/table/userTable.php";
+
     }
 
-//    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-//    $segments = explode('/', trim($uri, '/'));
-
-//    if (count($segments) > 1) {
-//        require_once "$root/src/views/tableUsers/restTable.php";
-//    }
     ?>
-
-
-
 
 </div>
 </body>

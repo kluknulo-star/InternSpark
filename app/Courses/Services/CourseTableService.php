@@ -1,11 +1,12 @@
 <?php
-namespace app\Users\Services\users;
+namespace app\Courses\Services;
 
 use app\Core\Helpers\Pagination;
 use app\Core\Helpers\UserHelper;
+use app\Courses\Entity\CourseData;
 use app\Users\Entity\UserData;
 
-class UsersTableService
+class CourseTableService
 {
     private function redirect($location, $error = "")
     {
@@ -26,14 +27,14 @@ class UsersTableService
         return UserHelper::findUserFromId($id);
     }
 
-    public function getCountTableRecords($role="admin")
+    public function getCountTableRecords(int $idAuthor, string $role="admin")
     {
-        return UserData::getCountTableRecords($role);
+        return CourseData::getCountCourseRecords($idAuthor, $role);
     }
 
-    public function sliceRead($start, $per_page, $role)
+    public function sliceRead($idAuthor, $start, $per_page, $role)
     {
-        return UserData::sliceRead($start, $per_page, $role);
+        return CourseData::sliceRead($idAuthor, $start, $per_page, $role);
     }
 
     public function createPagination($page, $per_page, $total)

@@ -34,5 +34,7 @@ const ALL_TABLE_ARRAY = [
     "file_incorrect" => "Некорректный формат фотографии",
     "fatal_error" => "Sorry, your file was not uploaded.",
     "delete_myself" => "Разве это выход?",
+    "invalid_title_course" => "Некорректное название",
+    "invalid_description_course" => "Некорректное описание",
 
 ];
