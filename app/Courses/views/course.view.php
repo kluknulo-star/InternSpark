@@ -69,7 +69,19 @@
 
                                             <div align="center" class="card-body">
                                                 <p class="card-title"><b><?= $section['type'] ?></b></p>
-                                                <p class="card-text"><?= $section['content'] ?></p>
+
+                                                    <?php if ($section['type'] == 'link'){
+                                                        ?>
+                                                        <p class="card-text"> <a href='https://www.google.com/search?q=<?=$section['content']?>'><?=$section['content']?></a></p>
+                                                    <?php } else if ($section['type'] == 'photo') {?>
+                                                        <p class="card-text">
+                                                            <img align="center" src="<?=$section['content']?>" alt="<?=$section['content']?>" class="img-fluid my-1"
+                                                                 style="width: 290px; "/>
+<!--                                                            <a href='https://www.google.com/search?q=--><?//=$section['content']?><!--'>--><?//=$section['content']?><!--</a></p>-->
+                                                         <?php } else { ?>
+                                                             <p class="card-text"> <?=$section['content']?> </p>
+                                                         <?php }?>
+
                                             </div>
                                         </div>
                                     </div>

@@ -1,7 +1,9 @@
 <?php
 
 namespace app\Courses\Controller;
+
 use app\Core\Helpers\CourseHelper;
+use app\Core\Helpers\Pagination;
 use app\Courses\Entity\CourseData;
 
 use app\Courses\Entity\SectionRecord;
@@ -14,11 +16,11 @@ use app\Core\Helpers\UserHelper;
 use app\Courses\Model\CourseModel;
 
 
-class CourseController extends BaseController{
+class CourseController extends BaseController
+{
     private function checkUserInSystem()
     {
-        if (!UserHelper::isUserInSystem())
-        {
+        if (!UserHelper::isUserInSystem()) {
             $_SESSION["error"] = "access_denied";
             $this->redirect("login");
         }
@@ -26,11 +28,11 @@ class CourseController extends BaseController{
 
     private function checkPermission(int $courseId)
     {
-        $courseRecord = CourseHelper::findUserFromId($courseId);
+        $courseRecord = CourseHelper::findCourseFromId($courseId);
         $userInSystem = UserHelper::findUser($_SESSION['uid']);
         if ($userInSystem->getId() != $courseRecord->getIdAuthor()) {
             $_SESSION["error"] = "access_denied";
-            $this->redirect("course");
+            $this->redirect("courses");
             return true;
         }
     }
@@ -47,6 +49,28 @@ class CourseController extends BaseController{
         require_once APP_ROOT_DIRECTORY . "app/Courses/views/table/table.php";
     }
 
+    public function listIndex(array $params)
+    {
+        $this->checkUserInSystem();
+
+        $userId = array_shift($params);
+        $userInSystem = UserHelper::findUser($_SESSION["uid"]);
+        $CourseData = new CourseData();
+
+        $userInSystem = UserHelper::findUser($_SESSION["uid"]);
+        $page = $_GET['page'] ?? 1;
+        $per_page = 10;
+        $total = CourseData::getAllCountCourseRecords($userInSystem->getRole());
+        $_SESSION["allTable"] = "true";
+
+        $pagination = new Pagination((int)$page, $per_page, $total);
+        $start = $pagination->get_start();
+
+        $sliceCourseData = CourseData::sliceReadAll($start, $per_page, $userInSystem->getRole());
+
+        require_once APP_ROOT_DIRECTORY . "app/Courses/views/table/allTable.php";
+    }
+
     public function create()
     {
         $this->checkUserInSystem();
@@ -54,14 +78,17 @@ class CourseController extends BaseController{
         if (isset($_POST["submit"])) {
 
             $idAuthor = UserHelper::findUser($_SESSION["uid"])->getId();
-            $title = $_POST["title"];
-            $description = $_POST["description"];
-            if(AddCourseValidator::check($title, $description))
-            {
+            $title = htmlspecialchars($_POST["title"]);
+            $description = htmlspecialchars($_POST["description"]);
+            if (strlen(str_replace(" ", '',$_POST["title"])) && strlen(str_replace(" ", '',$_POST["description"]))) {
                 CourseModel::createCourse($idAuthor, $title, $description);
                 unset($_SESSION["try_title"]);
                 unset($_SESSION["try_description"]);
                 $this->redirect("courses");
+            }
+            else
+            {
+                $_SESSION["error"] = "empty_input";
             }
             $this->redirect("courses/create");
         }
@@ -75,7 +102,7 @@ class CourseController extends BaseController{
         $courseId = array_shift($params);
 
         $this->checkUserInSystem();
-        $courseRecord = CourseHelper::findUserFromId($courseId);
+        $courseRecord = CourseHelper::findCourseFromId($courseId);
         $sectionCourseDump = SectionModel::readCourseContent($courseId);
 
         require_once APP_ROOT_DIRECTORY . "app/Courses/views/course.view.php";
@@ -107,30 +134,23 @@ class CourseController extends BaseController{
         $this->checkUserInSystem();
         $this->checkPermission($courseId);
 
-        $CourseId = array_shift($params);
+        $courseRecord = CourseHelper::findCourseFromId($courseId);
 
-        $CourseRecord = CourseHelper::findUserFromId($CourseId);
+        if (isset($_POST["submit"])) {
+            $title = htmlspecialchars($_POST["title"]);
+            $description = htmlspecialchars($_POST["description"]);
+            if (strlen(str_replace(" ", '', $_POST["title"])) && strlen(str_replace(" ", '', $_POST["description"]))) {
+                CourseModel::updateCourse($courseId, $title, $description);
+                unset($_SESSION["try_title"]);
+                unset($_SESSION["try_description"]);
+                $this->redirect("courses");
+            } else {
+                $_SESSION["error"] = "empty_input";
+            }
+        }
 
         require_once APP_ROOT_DIRECTORY . "app/Courses/views/course.edit.php";
     }
-
-//    public function addCards(array $params)
-//    {
-//        $courseId = array_shift($params);
-//        $this->checkUserInSystem();
-//        $this->checkPermission($courseId);
-//
-//        $newSection1 = new SectionRecord("text", "Hello, world");
-//        $newSection2 = new SectionRecord("text", "GoodBye");
-//        $inputObj = $newSection1;
-//
-//        $idCourse = 8;
-//
-//        $sectionCourseDump = SectionModel::readCourseContent($idCourse);
-//
-//        require_once APP_ROOT_DIRECTORY . "app/Courses/views/course.view.php";
-//    }
-
 
     public function listCards(array $params)
     {
@@ -138,7 +158,7 @@ class CourseController extends BaseController{
         $this->checkUserInSystem();
         $this->checkPermission($courseId);
 //        var_dump($params);
-        $courseRecord = CourseHelper::findUserFromId($courseId);
+        $courseRecord = CourseHelper::findCourseFromId($courseId);
         $sectionCourseDump = SectionModel::readCourseContent($courseId);
 
         require_once APP_ROOT_DIRECTORY . "app/Courses/views/section/course.section.list.php";
@@ -150,7 +170,7 @@ class CourseController extends BaseController{
         $this->checkUserInSystem();
         $this->checkPermission($courseId);
 
-        if (isset($_POST["submit"])){
+        if (isset($_POST["submit"])) {
             $contentType = htmlspecialchars($_POST['selectType']);
             $content = htmlspecialchars($_POST['textbox']);
 
@@ -158,11 +178,47 @@ class CourseController extends BaseController{
             SectionModel::createSectionCourse($courseId, $sectionRecord);
 
             $this->redirect("courses/$courseId/content");
-//            var_dump($contentType, $content);
         }
 
 
         require_once APP_ROOT_DIRECTORY . "app/Courses/views/section/course.section.create.php";
+    }
+
+    public function deleteCard(array $params)
+    {
+        $courseId = array_shift($params);
+        $contentId = array_shift($params);
+        $this->checkUserInSystem();
+        $this->checkPermission($courseId);
+
+        SectionModel::deleteSection($courseId, $contentId);
+        $this->redirect("courses/$courseId/content");
+        require_once APP_ROOT_DIRECTORY . "app/Courses/views/section/course.section.list.php";
+    }
+
+    public function editCard(array $params)
+    {
+        $courseId = array_shift($params);
+        $contentId = array_shift($params);
+        $this->checkUserInSystem();
+        $this->checkPermission($courseId);
+
+        $sectionContent = SectionModel::getSectionCourse($courseId, $contentId);
+
+        if (isset($_POST["submit"])) {
+            $contentType = htmlspecialchars($_POST['selectType']);
+            $content = htmlspecialchars($_POST['textbox']);
+
+            $sectionRecord = new SectionRecord($contentType, $content);
+            SectionModel::editSectionCourse($courseId, $contentId, $sectionRecord);
+
+            $this->redirect("courses/$courseId/content");
+        }
+
+
+//        SectionModel::deleteSection($courseId, $contentId);
+
+        require_once APP_ROOT_DIRECTORY . "app/Courses/views/section/course.section.edit.php";
     }
 
 }

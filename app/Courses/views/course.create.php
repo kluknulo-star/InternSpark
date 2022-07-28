@@ -27,7 +27,7 @@
             <div class="col-12 col-md-9 col-lg-7 col-xl-6">
 
                 <!--    Alert window-->
-                <?php require_once APP_ROOT_DIRECTORY . "app/Users/views/utils/alertWindow.php" ?>
+                <?php require_once APP_ROOT_DIRECTORY . "app/Courses/views/utils/alertWindow.php" ?>
                 <!--    Alert window-->
 
                 <div class="card" style="border-radius: 15px;">

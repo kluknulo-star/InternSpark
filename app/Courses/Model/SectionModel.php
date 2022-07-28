@@ -23,47 +23,81 @@ class SectionModel
 
         $jsonContent = SectionModel::readCourseContent($idCourse);
 
-        array_unshift($jsonContent, $contentInput);
+        if ($jsonContent)
+        {
+            array_unshift($jsonContent, $contentInput);
+        }
+        else
+        {
+            $jsonContent[] = $contentInput;
+        }
+
 //        $jsonContent[] = $contentInput;
 
         $jsonContent = json_encode($jsonContent);
 
-        $statement = DataBase::connect()
-            ->prepare("UPDATE courses SET content=? WHERE id_course=?;");
-//        var_dump($jsonContent);
-        return $statement->execute([$jsonContent, $idCourse]);
-
+        return SectionModel::updateCourseContent($jsonContent, $idCourse);
     }
 
-    public static function updateCourseContent($content, $id){
+    public static function updateCourseContent($content, $id) : bool
+    {
         $statement = DataBase::connect()
             ->prepare('UPDATE courses SET content=? WHERE id_course=?;');
 
         return $statement->execute([$content, $id]);
     }
 
-    public static function updateCourseAuthor($title, $description, $id){
+    public static function updateCourse($title, $description, $id){
         $statement = DataBase::connect()
             ->prepare('UPDATE courses SET title=?, description=? WHERE id_course=?;');
 
         return $statement->execute([$title, $description, $id]);
     }
 
-    public static function deleteCourse($id){
-        $statement = DataBase::connect()
-            ->prepare('UPDATE courses SET deleted_at=NOW() WHERE id_course=? AND deleted_at IS NULL;');
+    public static function deleteSection($idCourse, $idSection){
+        $allSectionCourse = SectionModel::readCourseContent($idCourse);
 
-        return $statement->execute([$id]);
+        foreach ($allSectionCourse as $key => $section)
+        {
+            if ($section['sectionId'] == $idSection) {
+                unset($allSectionCourse[$key]);
+            }
+        }
+
+        $jsonContent = json_encode($allSectionCourse);
+
+        return SectionModel::updateCourseContent($jsonContent, $idCourse);
     }
 
-    public static function recoverCourse($id){
-        $statement = DataBase::connect()
-            ->prepare('UPDATE courses SET deleted_at=NULL WHERE id_course=? AND deleted_at IS NOT NULL;');
+    public static function editSectionCourse($idCourse, $idSection, $content){
+        $allSectionCourse = SectionModel::readCourseContent($idCourse);
 
-        return $statement->execute([$id]);
+        foreach ($allSectionCourse as $key => $section)
+        {
+            if ($section['sectionId'] == $idSection) {
+                $allSectionCourse[$key] = $content;
+//                unset($allSectionCourse[$key]);
+             var_dump($section);
+            }
+        }
 
+        $jsonContent = json_encode($allSectionCourse);
+
+        return SectionModel::updateCourseContent($jsonContent, $idCourse);
     }
 
+    public static function getSectionCourse($idCourse, $idSection) : string
+    {
+        $allSectionCourse = SectionModel::readCourseContent($idCourse);
+
+        foreach ($allSectionCourse as $key => $section)
+        {
+            if ($section['sectionId'] == $idSection) {
+                return $allSectionCourse[$key]['content'];
+            }
+        }
+        return "";
+    }
 
 
 }

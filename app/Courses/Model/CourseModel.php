@@ -19,7 +19,7 @@ class CourseModel
         return $statement->execute([$content, $id]);
     }
 
-    public static function updateCourseAuthor($title, $description, $id){
+    public static function updateCourse($id, $title, $description){
         $statement = DataBase::connect()
             ->prepare('UPDATE courses SET title=?, description=? WHERE id_course=?;');
 

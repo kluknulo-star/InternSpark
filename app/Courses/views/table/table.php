@@ -54,10 +54,13 @@
 
         <a href="/logout" class="btn btn-danger">LOGOUT</a>
         <a href="/profile" class="btn btn-primary">Profile</a>
+        <a href="/courses/list" class="btn btn-dark">Все курсы</a>
         <a href="/users" class="btn btn-light">Пользователи</a>
     </form>
 
     <?php
+
+
 
     if (!$userId) {
         $userId = $userInSystem->getId();

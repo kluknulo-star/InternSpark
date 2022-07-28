@@ -17,12 +17,62 @@ class CourseData
 
     const RECOVER_COURSE = 'UPDATE courses SET deleted_at = NULL WHERE id = ? AND deleted_at IS NOT NULL;';
 
-
-
-    public static function getCountCourseRecords(int $idAuthor,string $role = "admin"): int
+    public static function getAllCountCourseRecords(string $role = "admin"): int
     {
         if ($role == 'admin') {
+
+            $statement = DataBase::connect()->prepare('SELECT COUNT(*) FROM courses;');
+
+        } else {
+            $statement = DataBase::connect()->prepare("SELECT COUNT(*) FROM courses WHERE deleted_at IS NULL;");
+        }
+
+        $statement->execute();
+
+        return $statement->fetchColumn();
+    }
+
+    public static function sliceReadAll(int $start, int $perPage, string $sessionRoleName = "admin"): array
+    {
+        if ($sessionRoleName == "admin") {
+            $statement = DataBase::connect()
+                ->query("SELECT id_course, id_author, title, description, users.name_first, content, courses.deleted_at
+                                                FROM users INNER JOIN courses ON users.id = courses.id_author
+                                                    ORDER BY id_course DESC LIMIT $start, $perPage;");
+        } else {
+            $statement = DataBase::connect()
+                ->query("SELECT id_course , id_author, title, description, users.name_first, content, courses.deleted_at
+                                                FROM users INNER JOIN courses ON users.id = courses.id_author 
+                                                WHERE courses.deleted_at IS NULL ORDER BY id_course DESC LIMIT $start, $perPage");
+        }
+
+        $tableStatement = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $sliceRecords = [];
+        foreach ($tableStatement as $line) {
+
+            $idCourse = $line["id_course"];
+            $idAuthor = $line["id_author"];
+            $title = $line["title"];
+            $nameFirst = $line["name_first"];
+            $content = $line["content"];
+            $deleted_at = $line["deleted_at"];
+            $description = $line["description"];
+
+
+            $record = new CourseRecord($idCourse, $idAuthor, $title, $description, $nameFirst, $content, $deleted_at);
+            $sliceRecords[] = $record;
+
+        }
+        return $sliceRecords;
+    }
+
+    public static function getCountCourseRecords(int $idAuthor, string $role = "admin"): int
+    {
+        if ($role == 'admin') {
+
             $statement = DataBase::connect()->prepare(self::COUNT_RECORDS);
+
         } else {
             $statement = DataBase::connect()->prepare(self::COUNT_RECORDS_FOR_USERS);
         }
@@ -33,7 +83,7 @@ class CourseData
     }
 
 
-    public static function sliceRead(int $idAuthor,int $start,int $perPage,string $sessionRoleName = "admin"): array
+    public static function sliceRead(int $idAuthor, int $start, int $perPage, string $sessionRoleName = "admin"): array
     {
         if ($sessionRoleName == "admin") {
             $statement = DataBase::connect()
@@ -58,7 +108,7 @@ class CourseData
             $nameFirst = $line["name_first"];
             $content = $line["content"];
             $deleted_at = $line["deleted_at"];
-            $description= $line["description"];
+            $description = $line["description"];
 
 
             $record = new CourseRecord($idCourse, $idAuthor, $title, $description, $nameFirst, $content, $deleted_at);

@@ -41,6 +41,9 @@ $webRoutes = [
     'courses' => 'app/Courses/Controller/CourseController@index',
     'users/(\d+)/courses' => 'app/Courses/Controller/CourseController@index',
 
+    /** @see \app\Courses\Controller\CourseController::listIndex() */
+    'courses/list' => 'app/Courses/Controller/CourseController@listIndex',
+
     /** @see \app\Courses\Controller\CourseController::create() */
     'courses/create' => 'app/Courses/Controller/CourseController@create',
 
@@ -67,8 +70,10 @@ $webRoutes = [
     /** @see \app\Courses\Controller\CourseController::createCard() */
     'courses/(\d+)/content/create' => 'app/Courses/Controller/CourseController@createCard',
 
+    /** @see \app\Courses\Controller\CourseController::deleteCard() */
+    'courses/(\d+)/content/(\d+)/delete' => 'app/Courses/Controller/CourseController@deleteCard',
 
-
-
+    /** @see \app\Courses\Controller\CourseController::editCard() */
+    'courses/(\d+)/content/(\d+)/edit' => 'app/Courses/Controller/CourseController@editCard',
 
 ];

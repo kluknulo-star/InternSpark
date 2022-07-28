@@ -17,7 +17,7 @@ class CourseHelper
 
     const IS_EXIST_ID = 'SELECT IF( EXISTS(SELECT id FROM users WHERE id= ?), 1, 0);';
 
-    public static function findUserFromId(int $id) : mixed
+    public static function findCourseFromId(int $id) : mixed
     {
 
         $statement = DataBase::connect()->prepare(self::FIND_COURSE_RECORD_FROM_ID);
