@@ -36,8 +36,6 @@
 
 <main>
     <div class="container-fluid container-lg">
-
-        <section>
             <div class="mask d-flex align-items-center h-100 gradient-custom-3">
                 <div class="container h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -48,7 +46,7 @@
                             <!--    Alert window-->
 
                             <!--                            Card SignUp-->
-                            <div class="card" style="border-radius: 15px;">
+                            <div class="card" style="border-radius: 5px;">
                                 <div class="card-body p-5">
                                     <h2 class="text-uppercase text-center mb-5">Создать аккаунт</h2>
 
@@ -66,7 +64,6 @@
                                             <div id="" class="form-text">[A-Z] [a-z] [0-9] [ _ ] 5-15 символов
                                             </div>
                                         </div>
-
                                         <div class="form-outline mb-4">
                                             <label class="form-label" for="form3Example3cg">Email</label>
                                             <input type="email" name="email" class="form-control form-control-lg"
@@ -79,41 +76,29 @@
                                             <div id="emailHelp" class="form-text"> exapmle@example.ru
                                             </div>
                                         </div>
-
                                         <div class="form-outline mb-4">
                                             <label class="form-label" for="form3Example4cg">Пароль</label>
                                             <input type="password" name="pwd" class="form-control form-control-lg"/>
                                             <div id="" class="form-text">[A-Z] [a-z] [0-9] [спецсимволы] 5-15 символов
                                             </div>
                                         </div>
-
                                         <div class="form-outline mb-4">
                                             <label class="form-label" for="form3Example4cdg">Повторите пароль</label>
                                             <input type="password" name="pwdRepeat"
                                                    class="form-control form-control-lg"/>
                                         </div>
-
-
                                         <div class="d-flex justify-content-center">
                                             <button type="submit" name="submit"
-                                                    class="btn btn-success btn-block btn-lg">Зарегестрироваться
-                                            </button>
+                                                    class="btn btn-success btn-block btn-lg">Зарегестрироваться</button>
                                         </div>
-
                                     </form>
-
                                 </div>
                             </div>
-                            <!--                            Card SignUp-->
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
     </div>
 </main>
-
-
 </body>
 </html>
